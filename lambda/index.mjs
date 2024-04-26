@@ -6,8 +6,18 @@ import {
   SecretsManagerClient,
   GetSecretValueCommand,
 } from "@aws-sdk/client-secrets-manager";
-import { MongoClient } from "mongodb";
-import axios from 'axios';
+
+import {
+  BedrockRuntimeClient,
+  InvokeModelCommand,
+} from "@aws-sdk/client-bedrock-runtime";
+
+import { MongoClient, Double } from "mongodb";
+
+import { Console } from 'console';
+const logger = new Console({ stdout: process.stdout, stderr: process.stderr });
+
+const bedrockClient = new BedrockRuntimeClient({ region: "eu-central-1" });
 
 const secret_name = "swisscom-masteryfriday-connectionstring";
 
@@ -38,22 +48,23 @@ const client = new MongoClient(secret.MongoDBConnectionString);
 export const handler = async (event) => {
   console.log(event);
 
+  //const searchText = 'kids in magic school'//JSON.parse(event.body).searchText;
   const searchText = JSON.parse(event.body).searchText;
   const agg = [];
   
   if (searchText !== "") {
-    const embedding = await getEmbedding(searchText);  
+    const embedding = await generateEmbeddings(JSON.stringify({"inputText": searchText}));  
     agg.push({"$vectorSearch": {
-          "queryVector": embedding,
-          "path": "plot_embedding",
+          "queryVector": embedding.map(num => new Double(num)),
+          "path": "eg_vector",
           "numCandidates": 100,
           "limit": 10,
-          "index": "default"
+          "index": "vector_index"
         }})
   }
 
   var dbName = "sample_mflix";
-  var collName = "embedded_movies";
+  var collName = "movies";
 
   // Get a collection from the context
   var collection = await client.db(dbName).collection(collName);
@@ -71,7 +82,7 @@ export const handler = async (event) => {
   agg.push(
         {
           "$facet": {
-          "rows": [{"$skip": 0}, {"$limit": 2000}],
+          "rows": [{"$skip": 0}, {"$limit": 20}],
           "rowCount": [{"$count": 'lastRow'}]
         }}    
   );
@@ -90,10 +101,10 @@ export const handler = async (event) => {
     const documents = await collection.aggregate(agg).next();
     return {
       statusCode: 200,
-      body: JSON.stringify(documents)
+      body: documents
     }
   } catch(err) {
-    console.log("Error occurred while executing findOne:", err.message);
+    console.log("Error occurred while executing aggregate:", err.message);
     return {
       statusCode: 500,
       error: err.message
@@ -101,35 +112,21 @@ export const handler = async (event) => {
   }
 };
 
-async function getEmbedding(query) {
-    const url = 'https://api.openai.com/v1/embeddings';
-    const openai_key = secret.OpenAI_APIKey;
-    
-    const headers = {
-      'Authorization': [`Bearer ${openai_key}`],
-      'Content-Type': ['application/json']
-    };
 
-    //query = "Movies with kids";
+async function generateEmbeddings(body) {
 
-    const body = JSON.stringify({
-      input: query,
-      model: "text-embedding-ada-002"
-    });
+  // Invoke the model with the payload and wait for the response.
+  const command = new InvokeModelCommand({
+    contentType: "application/json",
+    body,
+    modelId: 'amazon.titan-embed-text-v1',
+    accept: 'application/json'
+  });
+  const apiResponse = await bedrockClient.send(command);
 
-    console.log(headers);
-    console.log(`query: ${query}`);
-
-    // Call OpenAI API to get the embeddings.
-    const response = await axios.post(url, body, { headers: headers });
-
-    console.log(response.status);
-    console.log(response.data);
-
-    if(response.status === 200) {
-        let responseData = response.data;
-        return responseData.data[0].embedding;
-    } else {
-        throw new Error(`Failed to get embedding. Status code: ${response.status}`);
-    }
+  // Decode and return the response.
+  const decodedResponseBody = new TextDecoder().decode(apiResponse.body);
+  const responseBody = JSON.parse(decodedResponseBody);
+  console.log(responseBody);
+  return responseBody.embedding.map(num => parseFloat(num)); 
 }
