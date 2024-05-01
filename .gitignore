@@ -1,2 +1,15 @@
 .DS_Store
+
+# Node modules
 node_modules
+
+# Terraform
+**/.terraform/*
+
+*.tfstate
+*.tfstate.*
+
+crash.log
+crash.*.log
+
+tf_init/.terraform.lock.hcl
