@@ -3,7 +3,6 @@
 #
 #   Initialize Cloud9 instance
 #
-cd ~/environment
 pwd
 
 # Perform general update
