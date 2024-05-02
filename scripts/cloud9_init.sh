@@ -3,8 +3,8 @@
 #
 #   Initialize Cloud9 instance
 #
+cd ~/environment
 pwd
-ls -l
 
 # Perform general update
 sudo yum update -y
