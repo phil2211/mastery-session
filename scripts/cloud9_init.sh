@@ -3,6 +3,8 @@
 #
 #   Initialize Cloud9 instance
 #
+pwd
+ls -l
 
 # Perform general update
 sudo yum update -y
