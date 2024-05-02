@@ -20,7 +20,7 @@ resource "aws_servicecatalog_provisioned_product" "iaws_cloud9" {
 }
 
 resource "aws_ssm_document" "cloud9_document" {
-  name          = "my-ssm-document"
+  name          = "iaws-mastery-cloud9-init-document"
   document_type = "Command"
   content       = <<DOC
 {
@@ -32,6 +32,7 @@ resource "aws_ssm_document" "cloud9_document" {
       "name": "runShellScript",
       "inputs": {
         "runCommand": [
+          "cd ~/environment",
           "git clone https://oauth2:glpat-dAeEAhdXJYs-5_JeJFrg@code.swisscom.com/swisscom/iaws-devops-mastery-friday/iaws-mongodb.git",
           "cd iaws-mongodb/scripts",
           "chmod +x cloud9_init.sh",
