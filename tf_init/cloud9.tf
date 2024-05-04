@@ -32,11 +32,10 @@ resource "aws_ssm_document" "cloud9_document" {
       "name": "runShellScript",
       "inputs": {
         "runCommand": [
-          "cd /home/ec2-user/environment",
-          "runuser -l ec2-user -c 'git clone https://oauth2:glpat-dAeEAhdXJYs-5_JeJFrg@code.swisscom.com/swisscom/iaws-devops-mastery-friday/iaws-mongodb.git /home/ec2-user/environment'",
-          "cd iaws-mongodb/scripts",
+          "runuser -l ec2-user -c 'git clone https://oauth2:glpat-dAeEAhdXJYs-5_JeJFrg@code.swisscom.com/swisscom/iaws-devops-mastery-friday/iaws-mongodb.git /home/ec2-user/environment/iaws-mongodb'",
+          "cd /home/ec2-user/environment/iaws-mongodb/scripts",
           "chmod +x cloud9_init.sh",
-          "runuser -l ec2-user -c ./cloud9_init.sh"
+          "./cloud9_init.sh"
         ]
       }
     }
