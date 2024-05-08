@@ -19,7 +19,7 @@ function App() {
       const response = await fetch(LAMBDA_URL, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ searchText }),
       });
@@ -67,7 +67,7 @@ function App() {
         </Grid>
       </Grid>
       <Grid container spacing={2} justifyContent="center" style={{ padding: 50 }}>
-        {data?.vectorSearch?.rows.map((item, index) => (
+        {data?.rows.map((item, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={index}>
             <Card key={index} sx={{ maxWidth: 345 }}>
               <CardMedia
