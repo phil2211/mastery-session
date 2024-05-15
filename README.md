@@ -21,5 +21,7 @@ npm start
 ![Application running](images/app-running.png)
 8. Click on Preview ⇒ Preview Running Application
 ![App Running](images/c9-preview-app.png)
-9. Enter a prompt and search:
+9. The web app should show up with a search box:
+![App Running](images/app.png)
+10. Enter a prompt and search:
 ![App Query](images/app-query.png)
