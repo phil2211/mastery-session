@@ -13,3 +13,5 @@ crash.log
 crash.*.log
 
 tf_init/.terraform.lock.hcl
+
+.env.local
