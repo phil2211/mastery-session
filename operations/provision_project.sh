@@ -25,5 +25,4 @@ aws servicecatalog provision-product \
         Key=MongoDbProjectName,Value="${project_name}" \
         Key=EnableAuditing,Value="True" \
         Key=Subnets,Value="/platform/sharedvpc/private_subnets" \
-        Key=EnableLogsExportToS3Bucket,Value="True" \
-        Key=S3BucketForExports,Value="taajaan9-atlas-systemdemo"
+        Key=EnableLogsExportToS3Bucket,Value="False"
