@@ -20,6 +20,6 @@ npm start
 7. Wait for the application to start up on http://localhost:8080
 ![Application running](images/app-running.png)
 8. Click on Preview ⇒ Preview Running Application
-![App Running](images/app-running.png)
+![App Running](images/c9-preview-app.png)
 9. Enter a prompt and search:
 ![App Query](images/app-query.png)
