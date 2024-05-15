@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Tooltip, Grid, Card, CardMedia, CardContent, Typography, Button, TextField } from '@mui/material';
 import defaultPoster from './assets/na.jpeg';
 
-const LAMBDA_URL = 'https://scb6pwpgt5rexcvjd4vpm6yyc40sznrf.lambda-url.eu-central-1.on.aws/';
+const LAMBDA_URL = process.env.REACT_APP_LAMBDA_URL;
 
 function App() {
   const [searchText, setSearchText] = useState('');
