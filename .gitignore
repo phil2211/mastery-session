@@ -14,7 +14,7 @@ node_modules
 crash.log
 crash.*.log
 
-tf_init/.terraform.lock.hcl
+.terraform.lock.hcl
 
 .env.local
 .env
