@@ -10,6 +10,9 @@ cd /home/ec2-user/environment/installations
 # Perform general update
 sudo yum update -y
 
+#   Setup npm registry
+npm config set registry https://artifactory.swisscom.com/artifactory/api/npm/npm-remote
+
 #   Install mongodb shell
 wget https://artifactory.swisscom.com/artifactory/iaws-mastery-bin-generic-local/artifactory/general/mongodb/mongosh-2.2.5-linux-x64.tgz
 tar -zxvf mongosh-2.2.5-linux-x64.tgz
