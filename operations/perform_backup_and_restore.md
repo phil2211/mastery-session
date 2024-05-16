@@ -9,12 +9,13 @@ export PP_ID=<pp-id>
 
 ### Set id of the version of the provisioned iaws-mongodb-cluster product
 ```terminal
-export MONGODB_ATLAS_CLUSTER_PRODUCT_VERSION="2.2.0-preview"
+export MONGODB_ATLAS_CLUSTER_PRODUCT_VERSION='2.2.0-preview'
 ```
 
 ### Get available service actions for version
 ```terminal
-aws servicecatalog list-service-actions --query "ServiceActionSummaries[?starts_with(Name, \`sc-mongodb-cluster-v${MONGODB_ATLAS_CLUSTER_PRODUCT_VERSION}\`)].[Name, Id]"
+aws servicecatalog list-service-actions \
+    --query "ServiceActionSummaries[?starts_with(Name, \`sc-mongodb-cluster-v${MONGODB_ATLAS_CLUSTER_PRODUCT_VERSION}\`)].[Name, Id]"
 ```
 
 ### Set id of the relevant service action. In this case, *take-snapshot*
@@ -27,7 +28,7 @@ export SA_ID=<id-of-take-snapshot-service-action>
 export SA_RECORD_ID=$(aws servicecatalog execute-provisioned-product-service-action \
     --provisioned-product-id ${PP_ID} \
     --service-action-id ${SA_ID} \
-    --parameters Description="Mastery-Friday-Snapshot",RetentionInDays="2" \
+    --parameters Description='Mastery-Friday-Snapshot',RetentionInDays='2' \
     --query "RecordDetail.RecordId" \
     --output text
 )
@@ -59,12 +60,13 @@ export PP_ID=<pp-id>
 (Skip if using the same session)
 
 ```terminal
-export MONGODB_ATLAS_CLUSTER_PRODUCT_VERSION="2.2.0-preview"
+export MONGODB_ATLAS_CLUSTER_PRODUCT_VERSION='2.2.0-preview'
 ```
 
 ### Get available service actions for version
 ```terminal
-aws servicecatalog list-service-actions --query "ServiceActionSummaries[?starts_with(Name, \`sc-mongodb-cluster-v${MONGODB_ATLAS_CLUSTER_PRODUCT_VERSION}\`)].[Name, Id]"
+aws servicecatalog list-service-actions \
+    --query "ServiceActionSummaries[?starts_with(Name, \`sc-mongodb-cluster-v${MONGODB_ATLAS_CLUSTER_PRODUCT_VERSION}\`)].[Name, Id]"
 ```
 
 ### Set id of the relevant service action. In this case, *list-snapshots*
@@ -92,7 +94,9 @@ export SSM_AUTOM_EXEC_ID=$(aws servicecatalog describe-record \
 
 ### Get relevant output of SSM Automation triggered by service action execution. In this case, list of snapshots
 ```terminal
-aws ssm get-automation-execution --automation-execution-id ${SSM_AUTOM_EXEC_ID} --query "AutomationExecution.[StepExecutions][0][?StepName == 'listSnapshots'].Outputs | [0] | Snapshots" | jq -r '.[] |fromjson'
+aws ssm get-automation-execution --automation-execution-id ${SSM_AUTOM_EXEC_ID} \
+    --query "AutomationExecution.[StepExecutions][0][?StepName == 'listSnapshots'].Outputs \
+    | [0] | Snapshots" | jq -r '.[] | fromjson'
 ```
 
 ---
@@ -110,12 +114,13 @@ export PP_ID=<pp-id>
 (Skip if using the same session)
 
 ```terminal
-export MONGODB_ATLAS_CLUSTER_PRODUCT_VERSION="2.2.0-preview"
+export MONGODB_ATLAS_CLUSTER_PRODUCT_VERSION='2.2.0-preview'
 ```
 
 ### Get available service actions for version
 ```terminal
-aws servicecatalog list-service-actions --query "ServiceActionSummaries[?starts_with(Name, \`sc-mongodb-cluster-v${MONGODB_ATLAS_CLUSTER_PRODUCT_VERSION}\`)].[Name, Id]"
+aws servicecatalog list-service-actions \
+    --query "ServiceActionSummaries[?starts_with(Name, \`sc-mongodb-cluster-v${MONGODB_ATLAS_CLUSTER_PRODUCT_VERSION}\`)].[Name, Id]"
 ```
 
 ### Set id of the relevant service action. In this case, *restore-snapshot*
