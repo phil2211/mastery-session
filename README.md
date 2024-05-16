@@ -10,8 +10,8 @@ npm install
 ```
 3. In the project drawer, click on **Show Hidden Files**
 ![Show Hidden Files](images/c9-show-hidden.png)
-4. Edit `.env`
-5. Set `REACT_APP_LAMBDA_URL` to the Lambda Function URL
+4. Copy `.env` to `.env.local`
+5. Set `REACT_APP_LAMBDA_URL` in the `.env.local` file to the Lambda Function URL
    * In te AWS Console: Lambda ⇒ **swisscom-masteryfriday-queryvector** ⇒ Configuration ⇒ Function URL ⇒ Copy Function URL parameter
 6. Start the application in the terminal:
 ```bash
