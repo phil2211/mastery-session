@@ -3,6 +3,8 @@
 # Node modules
 node_modules
 
+**/app/public
+
 # Terraform
 **/.terraform/*
 
@@ -15,3 +17,6 @@ crash.*.log
 tf_init/.terraform.lock.hcl
 
 .env.local
+.env
+
+*.zip
