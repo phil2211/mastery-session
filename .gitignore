@@ -20,3 +20,5 @@ crash.*.log
 .env
 
 *.zip
+.env.local
+sample_mflix.movies.json
