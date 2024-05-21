@@ -13,7 +13,9 @@ REGION="eu-central-1"
 sg_list=$(aws ec2 describe-security-groups --region ${REGION} --filters Name=tag:${TAG_KEY},Values=${TAG_VALUE} --query 'SecurityGroups[*].GroupId' --output text)
  
 for sg in $sg_list 
-do
+# open egress from 1024 - 1100
+# 443 to anywhere
     echo "Adding egress rule to Security Group ID: $sg"
-    aws ec2 authorize-security-group-egress --region ${REGION} --group-id $sg --protocol tcp --port 1026 --cidr 0.0.0.0/0
+    aws ec2 authorize-security-group-egress --region ${REGION} --group-id $sg --protocol tcp --port 443 --cidr 0.0.0.0/0
+    aws ec2 authorize-security-group-egress --region ${REGION} --group-id $sg --protocol tcp --port 1024-1100 --cidr 0.0.0.0/0
 done
